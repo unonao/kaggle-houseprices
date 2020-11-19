@@ -9,18 +9,24 @@ Feature.dir = 'features'
 
 class Numerical(Feature):
     def create_features(self):
-        numerical_cols = ['LotFrontage', 'LotArea', 'OverallQual', 'OverallCond', ]
-        self.train['LotFrontage'] = train['LotFrontage']
-        self.test['LotFrontage'] = test['LotFrontage']
+        numerical_cols = ['LotFrontage', 'LotArea', 'OverallQual',
+                          'YearBuilt', 'YearRemodAdd', 'MasVnrArea', 'BsmtFinSF1',
+                          'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', '1stFlrSF', '2ndFlrSF',
+                          'LowQualFinSF', 'GrLivArea', 'BsmtFullBath', 'BsmtHalfBath', 'FullBath',
+                          'HalfBath', 'BedroomAbvGr', 'KitchenAbvGr', 'TotRmsAbvGrd',
+                          'Fireplaces', 'GarageYrBlt', 'GarageCars', 'GarageArea', 'WoodDeckSF',
+                          'OpenPorchSF', 'EnclosedPorch', '3SsnPorch', 'ScreenPorch', 'PoolArea',
+                          'MiscVal', 'MoSold', 'YrSold']
+        self.train[numerical_cols] = train[numerical_cols]
+        self.test[numerical_cols] = test[numerical_cols]
 
 
 class LabelEncode(Feature):
     def create_features(self):
-        cols = ('FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond',
-                'ExterQual', 'ExterCond', 'HeatingQC', 'PoolQC', 'KitchenQual', 'BsmtFinType1',
+        cols = ['FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond',  'ExterQual', 'ExterCond', 'HeatingQC', 'PoolQC', 'KitchenQual', 'BsmtFinType1',
                 'BsmtFinType2', 'Functional', 'Fence', 'BsmtExposure', 'GarageFinish', 'LandSlope',
                 'LotShape', 'PavedDrive', 'Street', 'Alley', 'CentralAir', 'MSSubClass', 'OverallCond',
-                'YrSold', 'MoSold')
+                ]
         train["PoolQC"] = train["PoolQC"].fillna("None")
         test["PoolQC"] = test["PoolQC"].fillna("None")
         train["Alley"] = train["Alley"].fillna("None")
@@ -54,12 +60,6 @@ class LabelEncode(Feature):
         # Changing OverallCond into a categorical variable
         train['OverallCond'] = train['OverallCond'].astype(str)
         test['OverallCond'] = test['OverallCond'].astype(str)
-
-        # Year and month sold are transformed into categorical features.
-        train['YrSold'] = train['YrSold'].astype(str)
-        train['MoSold'] = train['MoSold'].astype(str)
-        test['YrSold'] = test['YrSold'].astype(str)
-        test['MoSold'] = test['MoSold'].astype(str)
 
         # process columns, apply LabelEncoder to categorical features
         for c in cols:

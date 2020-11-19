@@ -1,0 +1,37 @@
+DEBUG:root:./logs/log_20201119094713.log
+DEBUG:root:config: ./configs/default.json
+DEBUG:root:['numerical', 'label_encode']
+DEBUG:root:{'learning_rate': 0.1, 'num_leaves': 8, 'boosting_type': 'gbdt', 'colsample_bytree': 0.65, 'reg_alpha': 1, 'reg_lambda': 1, 'objective': 'root_mean_squared_error'}
+DEBUG:root:X_train_all shape: (1460, 58)
+DEBUG:main:[30]	valid_0's rmse: 0.137629
+DEBUG:main:[60]	valid_0's rmse: 0.122973
+DEBUG:main:[90]	valid_0's rmse: 0.121004
+DEBUG:root:	best_iteration: 88
+DEBUG:root:	best_score: 0.12093190014710105
+DEBUG:main:[30]	valid_0's rmse: 0.165197
+DEBUG:main:[60]	valid_0's rmse: 0.150025
+DEBUG:main:[90]	valid_0's rmse: 0.148548
+DEBUG:root:	best_iteration: 93
+DEBUG:root:	best_score: 0.14838944898567893
+DEBUG:main:[30]	valid_0's rmse: 0.162299
+DEBUG:main:[60]	valid_0's rmse: 0.144598
+DEBUG:main:[90]	valid_0's rmse: 0.14157
+DEBUG:main:[120]	valid_0's rmse: 0.140352
+DEBUG:root:	best_iteration: 116
+DEBUG:root:	best_score: 0.14028610061309876
+DEBUG:main:[30]	valid_0's rmse: 0.146361
+DEBUG:main:[60]	valid_0's rmse: 0.128207
+DEBUG:main:[90]	valid_0's rmse: 0.125676
+DEBUG:main:[120]	valid_0's rmse: 0.125112
+DEBUG:root:	best_iteration: 114
+DEBUG:root:	best_score: 0.12492993576269812
+DEBUG:main:[30]	valid_0's rmse: 0.156562
+DEBUG:main:[60]	valid_0's rmse: 0.144809
+DEBUG:main:[90]	valid_0's rmse: 0.142783
+DEBUG:main:[120]	valid_0's rmse: 0.141127
+DEBUG:main:[150]	valid_0's rmse: 0.140759
+DEBUG:root:	best_iteration: 157
+DEBUG:root:	best_score: 0.14030259817731458
+DEBUG:root:===CV scores===
+DEBUG:root:[0.12093190014710105, 0.14838944898567893, 0.14028610061309876, 0.12492993576269812, 0.14030259817731458]
+DEBUG:root:0.1349679967371783
