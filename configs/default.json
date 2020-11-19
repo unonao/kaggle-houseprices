@@ -1,7 +1,8 @@
 {
     "features": [
-        "numerical",
-        "label_encode"
+        "numerical_features",
+        "object_features",
+        "new_numerical"
         ],
     "lgbm_params": {
         "learning_rate": 0.1,

@@ -13,5 +13,9 @@ extension = 'csv'
 # extension = 'zip'
 
 for k, v in target.items():
-    (pd.read_csv('./data/input/' + k + '.' + extension, encoding="utf-8"))\
-        .to_feather('./data/interim/' + v + '.feather')
+    df = pd.read_csv('./data/input/' + k + '.' + extension, encoding="utf-8")
+    # deleting outliers
+    if k == 'train':
+        df = df[df.GrLivArea < 4500]
+        df = df.reset_index(drop=True)
+    df.to_feather('./data/interim/' + v + '.feather')

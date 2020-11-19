@@ -4,75 +4,127 @@ import re as re
 
 from base import Feature, get_arguments, generate_features
 from sklearn.preprocessing import LabelEncoder
+from scipy.stats import skew  # for some statistics
+from scipy.special import boxcox1p
+from scipy.stats import boxcox_normmax
 Feature.dir = 'features'
 
 
-class Numerical(Feature):
+def fillna_categorical(features):
+    # Filling these columns With most suitable value for these columns
+    features['Functional'] = features['Functional'].fillna('Typ')
+    features['Electrical'] = features['Electrical'].fillna("SBrkr")
+    features['KitchenQual'] = features['KitchenQual'].fillna("TA")
+
+    # Filling these with MODE , i.e. , the most frequent value in these columns .
+    features['Exterior1st'] = features['Exterior1st'].fillna(features['Exterior1st'].mode()[0])
+    features['Exterior2nd'] = features['Exterior2nd'].fillna(features['Exterior2nd'].mode()[0])
+    features['SaleType'] = features['SaleType'].fillna(features['SaleType'].mode()[0])
+
+    # Missing data in GarageYrBit most probably means missing Garage , so replace NaN with zero .
+    for col in ('GarageYrBlt', 'GarageArea', 'GarageCars'):
+        features[col] = features[col].fillna(0)
+
+    for col in ['GarageType', 'GarageFinish', 'GarageQual', 'GarageCond']:
+        features[col] = features[col].fillna('None')
+
+    # Same with basement. Missing data in Bsmt most probably means missing basement , so replace NaN with zero .
+
+    for col in ('BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2'):
+        features[col] = features[col].fillna('None')
+
+    #  Idea is that similar MSSubClasses will have similar MSZoning
+    features['MSZoning'] = features.groupby('MSSubClass')['MSZoning'].transform(lambda x: x.fillna(x.mode()[0]))
+
+    # (object) Fill the remaining columns as None
+    objects = []
+    for i in features.columns:
+        if features[i].dtype == object:
+            objects.append(i)
+    features.update(features[objects].fillna('None'))
+
+    return features
+
+
+def fillna_numerical(features):
+    # (numerical) Fill the remaining columns as None
+    features['LotFrontage'] = features.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median()))
+
+    numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+    numerics = []
+    for i in features.columns:
+        if features[i].dtype in numeric_dtypes:
+            numerics.append(i)
+    features.update(features[numerics].fillna(0))
+
+    # change distribution using box cox
+    skew_features = features[numerics].apply(lambda x: skew(x)).sort_values(ascending=False)
+
+    high_skew = skew_features[skew_features > 0.5]
+    skew_index = high_skew.index
+
+    for i in skew_index:
+        features[i] = boxcox1p(features[i], boxcox_normmax(features[i] + 1))
+
+    return features
+
+
+class ObjectFeatures(Feature):
     def create_features(self):
-        numerical_cols = ['LotFrontage', 'LotArea', 'OverallQual',
-                          'YearBuilt', 'YearRemodAdd', 'MasVnrArea', 'BsmtFinSF1',
-                          'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', '1stFlrSF', '2ndFlrSF',
-                          'LowQualFinSF', 'GrLivArea', 'BsmtFullBath', 'BsmtHalfBath', 'FullBath',
-                          'HalfBath', 'BedroomAbvGr', 'KitchenAbvGr', 'TotRmsAbvGrd',
-                          'Fireplaces', 'GarageYrBlt', 'GarageCars', 'GarageArea', 'WoodDeckSF',
-                          'OpenPorchSF', 'EnclosedPorch', '3SsnPorch', 'ScreenPorch', 'PoolArea',
-                          'MiscVal', 'MoSold', 'YrSold']
-        self.train[numerical_cols] = train[numerical_cols]
-        self.test[numerical_cols] = test[numerical_cols]
+        objects = []
+        for i in features.columns:
+            if features[i].dtype == object:
+                objects.append(i)
+        final_features = pd.get_dummies(features[objects])
+
+        self.train = final_features[:train.shape[0]]
+        self.test = final_features[train.shape[0]:]
 
 
-class LabelEncode(Feature):
+class NumericalFeatures(Feature):
     def create_features(self):
-        cols = ['FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond',  'ExterQual', 'ExterCond', 'HeatingQC', 'PoolQC', 'KitchenQual', 'BsmtFinType1',
-                'BsmtFinType2', 'Functional', 'Fence', 'BsmtExposure', 'GarageFinish', 'LandSlope',
-                'LotShape', 'PavedDrive', 'Street', 'Alley', 'CentralAir', 'MSSubClass', 'OverallCond',
-                ]
-        train["PoolQC"] = train["PoolQC"].fillna("None")
-        test["PoolQC"] = test["PoolQC"].fillna("None")
-        train["Alley"] = train["Alley"].fillna("None")
-        test["Alley"] = test["Alley"].fillna("None")
+        numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+        numerics = []
+        for i in features.columns:
+            if features[i].dtype in numeric_dtypes:
+                numerics.append(i)
+        self.train[numerics] = features[:train.shape[0]][numerics]
+        self.test[numerics] = features[train.shape[0]:][numerics]
 
-        train["Fence"] = train["Fence"].fillna("None")
-        test["Fence"] = test["Fence"].fillna("None")
-        train["FireplaceQu"] = train["FireplaceQu"].fillna("None")
-        test["FireplaceQu"] = test["FireplaceQu"].fillna("None")
 
-        for col in ('GarageType', 'GarageFinish', 'GarageQual', 'GarageCond'):
-            train[col] = train[col].fillna('None')
-            test[col] = test[col].fillna('None')
-        for col in ('BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', 'BsmtFullBath', 'BsmtHalfBath'):
-            train[col] = train[col].fillna(0)
-            test[col] = test[col].fillna(0)
-        for col in ('BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2'):
-            train[col] = train[col].fillna('None')
-            test[col] = test[col].fillna('None')
-        train["Functional"] = train["Functional"].fillna("Typ")
-        test["Functional"] = test["Functional"].fillna("Typ")
-        train['KitchenQual'] = train['KitchenQual'].fillna(train['KitchenQual'].mode()[0])
-        test['KitchenQual'] = test['KitchenQual'].fillna(test['KitchenQual'].mode()[0])
-        train['MSSubClass'] = train['MSSubClass'].fillna("None")
-        test['MSSubClass'] = test['MSSubClass'].fillna("None")
+class NewNumerical(Feature):
+    def create_features(self):
+        cols = ['YrBltAndRemod', 'TotalSF', 'Total_sqr_footage', 'Total_Bathrooms', 'Total_porch_sf', 'haspool', 'has2ndfloor', 'hasgarage', 'hasbsmt', 'hasfireplace']
+        # Adding new features . Make sure that you understand this.
+        features['YrBltAndRemod'] = features['YearBuilt']+features['YearRemodAdd']
+        features['TotalSF'] = features['TotalBsmtSF'] + features['1stFlrSF'] + features['2ndFlrSF']
+        features['Total_sqr_footage'] = (features['BsmtFinSF1'] + features['BsmtFinSF2'] +
+                                         features['1stFlrSF'] + features['2ndFlrSF'])
+        features['Total_Bathrooms'] = (features['FullBath'] + (0.5 * features['HalfBath']) +
+                                       features['BsmtFullBath'] + (0.5 * features['BsmtHalfBath']))
+        features['Total_porch_sf'] = (features['OpenPorchSF'] + features['3SsnPorch'] +
+                                      features['EnclosedPorch'] + features['ScreenPorch'] +
+                                      features['WoodDeckSF'])
+        # For ex, if PoolArea = 0 , Then HasPool = 0 too
+        features['haspool'] = features['PoolArea'].apply(lambda x: 1 if x > 0 else 0)
+        features['has2ndfloor'] = features['2ndFlrSF'].apply(lambda x: 1 if x > 0 else 0)
+        features['hasgarage'] = features['GarageArea'].apply(lambda x: 1 if x > 0 else 0)
+        features['hasbsmt'] = features['TotalBsmtSF'].apply(lambda x: 1 if x > 0 else 0)
+        features['hasfireplace'] = features['Fireplaces'].apply(lambda x: 1 if x > 0 else 0)
 
-        # MSSubClass=The building class
-        train['MSSubClass'] = train['MSSubClass'].apply(str)
-        test['MSSubClass'] = test['MSSubClass'].apply(str)
-
-        # Changing OverallCond into a categorical variable
-        train['OverallCond'] = train['OverallCond'].astype(str)
-        test['OverallCond'] = test['OverallCond'].astype(str)
-
-        # process columns, apply LabelEncoder to categorical features
-        for c in cols:
-            lbl = LabelEncoder()
-            lbl.fit(list(train[c].values)+list(test[c].values))
-            self.train[c] = lbl.transform(list(train[c].values))
-            self.test[c] = lbl.transform(list(test[c].values))
+        self.train[cols] = features[:train.shape[0]][cols]
+        self.test[cols] = features[train.shape[0]:][cols]
 
 
 if __name__ == '__main__':
     args = get_arguments()
     train = pd.read_feather('./data/interim/train.feather')
     test = pd.read_feather('./data/interim/test.feather')
-    print(train.head())
+    features = pd.concat([train.drop('Id', axis=1), test.drop('Id', axis=1)])
+
+    # Removing features that are not very useful . This can be understood only by doing proper EDA on data
+    features = features.drop(['Utilities', 'Street', 'PoolQC', ], axis=1)
+    features = fillna_numerical(features)
+    features = fillna_categorical(features)
 
     generate_features(globals(), args.force)

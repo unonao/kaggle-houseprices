@@ -1,5 +1,0 @@
-DEBUG:root:./logs/log_20201119094610.log
-DEBUG:root:config: ./configs/default.json
-DEBUG:root:['numerical', 'label_encode']
-DEBUG:root:{'learning_rate': 0.1, 'num_leaves': 8, 'boosting_type': 'gbdt', 'colsample_bytree': 0.65, 'reg_alpha': 1, 'reg_lambda': 1, 'objective': 'root_mean_squared_error'}
-DEBUG:root:X_train_all shape: (1460, 61)
