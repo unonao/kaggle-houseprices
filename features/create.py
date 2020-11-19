@@ -120,11 +120,12 @@ if __name__ == '__main__':
     args = get_arguments()
     train = pd.read_feather('./data/interim/train.feather')
     test = pd.read_feather('./data/interim/test.feather')
-    features = pd.concat([train.drop('Id', axis=1), test.drop('Id', axis=1)])
+    features = pd.concat([train.drop(['Id', 'SalePrice'], axis=1), test.drop('Id', axis=1)])
 
     # Removing features that are not very useful . This can be understood only by doing proper EDA on data
     features = features.drop(['Utilities', 'Street', 'PoolQC', ], axis=1)
     features = fillna_numerical(features)
     features = fillna_categorical(features)
+    print(features.shape)
 
     generate_features(globals(), args.force)

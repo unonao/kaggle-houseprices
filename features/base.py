@@ -42,6 +42,8 @@ def generate_features(namespace, overwrite):
             print(f.name, 'was skipped')
         else:
             f.run().save()
+            print('train: ', f.train.shape)
+            print('test: ', f.test.shape)
 
 
 # 特徴量の抽象基底クラス
