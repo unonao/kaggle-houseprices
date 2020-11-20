@@ -1,0 +1,18 @@
+{
+    "model": "KernelRidge",
+    "features": [
+        "label_encode_features",
+        "numerical_features",
+        "object_features",
+        "new_numerical"
+        ],
+    "params": {
+        "alpha" : 0.6,
+        "kernel":"polynomial",
+        "degree":2,
+        "coef0":2.5
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}

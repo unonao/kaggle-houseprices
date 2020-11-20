@@ -1,0 +1,16 @@
+{
+    "model": "ErasticNet",
+    "features": [
+        "label_encode_features",
+        "numerical_features",
+        "object_features",
+        "new_numerical"
+        ],
+    "params": {
+        "alpha" : 0.0005,
+        "l1_ratio": 0.9
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}

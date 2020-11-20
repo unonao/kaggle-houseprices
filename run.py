@@ -9,7 +9,7 @@ import numpy as np
 
 from utils import load_datasets, load_target, evaluate_score
 from logs.logger import log_best
-from models import LightGBM, LinearRegressionWrapper, LassoWrapper, RidgeWrapper
+from models import LightGBM, LinearRegressionWrapper, LassoWrapper, RidgeWrapper, ElasticNetWrapper, KernelRidgeWrapper
 
 # 引数で config の設定を行う
 parser = argparse.ArgumentParser()
@@ -32,8 +32,6 @@ def train_and_predict_lightgbm(X_train_all, y_train_all, X_test):
 
     # 学習前にy_trainに、log(y+1)で変換
     y_train_all = np.log(y_train_all + 1)  # np.log1p() でもOK
-
-    # グリッドサーチし、学習する。
 
     y_preds = []
     models = []
@@ -87,8 +85,6 @@ def train_and_predict_linear(X_train_all, y_train_all, X_test):
     # 学習前にy_trainに、log(y+1)で変換
     y_train_all = np.log(y_train_all + 1)  # np.log1p() でもOK
 
-    # グリッドサーチし、学習する。
-
     y_preds = []
     models = []
     # CVスコア
@@ -104,6 +100,11 @@ def train_and_predict_linear(X_train_all, y_train_all, X_test):
             lr = LassoWrapper()
         elif config['model'] == "Ridge":
             lr = RidgeWrapper()
+        elif config['model'] == "ErasticNet":
+            lr = ElasticNetWrapper()
+        elif config['model'] == "KernelRidge":
+            lr = KernelRidgeWrapper()
+
         y_pred, y_valid_pred, model = lr.train_and_predict(X_train, X_valid, y_train, y_valid, X_test, params)
 
         # 結果の保存
@@ -153,7 +154,7 @@ def main():
     logging.debug("X_train_all shape: {}".format(X_train_all.shape))
     if config['model'] == 'LightGBM':
         train_and_predict_lightgbm(X_train_all, y_train_all, X_test)
-    elif config['model'] in ['LinearRegression', 'Lasso', 'Ridge']:
+    elif config['model'] in ['LinearRegression', 'Lasso', 'Ridge', 'ErasticNet', 'KernelRidge']:
         train_and_predict_linear(X_train_all, y_train_all, X_test)
 
 
