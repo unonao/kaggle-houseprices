@@ -1,0 +1,30 @@
+# files under ./data
+/data/*/*.feather
+/data/*/*.csv
+/data/*/*.tsv
+/data/*/*.gz
+/data/*/*.zip
+
+# feature data files
+features/*.feather
+features/importances/*.png
+
+# log
+logs/*.log
+
+### JupyterNotebook ###
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride

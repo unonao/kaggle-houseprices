@@ -8,7 +8,7 @@ from models.base import Model
 
 
 class LightGBM(Model):
-    def train_and_predict(self, X_train, X_valid, y_train, y_valid, X_test, lgbm_params):
+    def train_and_predict(self, X_train, X_valid, y_train, y_valid, X_test, params):
 
         # データセットを生成する
         lgb_train = lgb.Dataset(X_train, y_train)
@@ -20,7 +20,7 @@ class LightGBM(Model):
 
         # 上記のパラメータでモデルを学習する
         model = lgb.train(
-            lgbm_params, lgb_train,
+            params, lgb_train,
             # モデルの評価用データを渡す
             valid_sets=lgb_eval,
             # 最大で 5000 ラウンドまで学習する

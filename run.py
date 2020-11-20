@@ -25,7 +25,7 @@ logging.basicConfig(
 
 feats = config['features']
 target_name = config['target_name']
-lgbm_params = config['lgbm_params']
+params = config['params']
 
 
 def train_and_predict_lightgbm(X_train_all, y_train_all, X_test):
@@ -44,7 +44,7 @@ def train_and_predict_lightgbm(X_train_all, y_train_all, X_test):
 
         # lgbmの実行
         lgbm = LightGBM()
-        y_pred, model = lgbm.train_and_predict(X_train, X_valid, y_train, y_valid, X_test, lgbm_params)
+        y_pred, model = lgbm.train_and_predict(X_train, X_valid, y_train, y_valid, X_test, params)
 
         # 結果の保存
         y_preds.append(y_pred)
@@ -87,13 +87,14 @@ def main():
 
     logging.debug('config: {}'.format(options.config))
     logging.debug(feats)
-    logging.debug(lgbm_params)
+    logging.debug(params)
 
     # 指定した特徴量からデータをロード
     X_train_all, X_test = load_datasets(feats)
     y_train_all = load_target(target_name)
     logging.debug("X_train_all shape: {}".format(X_train_all.shape))
-    train_and_predict_lightgbm(X_train_all, y_train_all, X_test)
+    if config['model'] == 'lightgbm':
+        train_and_predict_lightgbm(X_train_all, y_train_all, X_test)
 
 
 if __name__ == '__main__':

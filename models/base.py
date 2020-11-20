@@ -7,7 +7,7 @@ class Model:
     モデルのための抽象基底クラス
     '''
     @abstractmethod
-    def train_and_predict(self, X_train, X_valid, y_train, y_valid, X_test, lgbm_params):
+    def train_and_predict(self, X_train, X_valid, y_train, y_valid, X_test, params):
         raise NotImplementedError
 
     '''
