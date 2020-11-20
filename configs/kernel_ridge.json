@@ -5,10 +5,10 @@
         "object_features"
         ],
     "params": {
-        "alpha" : 0.6,
+        "alpha" : 9.2304694336833,
         "kernel":"polynomial",
-        "degree":2,
-        "coef0":2.5
+        "degree": 3,
+        "coef0": 7.405346770365897
     },
     "loss": "rmse",
     "target_name": "SalePrice",

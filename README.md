@@ -1,4 +1,10 @@
-# kaggle-base
+# kaggle-houseprices
+
+# やること
+
+- 特徴量選択（overfitting するものを見つける？）
+- パラメータ調整
+  - 適当だったので、一つ一つ簡単に調整できるようにしたい。(notebook?)
 
 # Structures
 
