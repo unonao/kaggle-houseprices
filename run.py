@@ -24,6 +24,7 @@ params = config['params']
 # log の設定
 now = datetime.datetime.now()
 logging.basicConfig(
+    # filename='./logs/log_{0:%Y%m%d%H%M%S}.log'.format( now), level=logging.DEBUG
     filename='./logs/log_{0}_{1:%Y%m%d%H%M%S}.log'.format(config['model'], now), level=logging.DEBUG
 )
 
@@ -75,7 +76,7 @@ def train_and_predict_lightgbm(X_train_all, y_train_all, X_test):
     sub[target_name] = y_sub
 
     sub.to_csv(
-        './data/output/sub_{0:%Y%m%d%H%M%S}_{1}.csv'.format(now, score),
+        './data/output/sub_{0}_{1:%Y%m%d%H%M%S}_{2}.csv'.format(config['model'], now, score),
         index=False
     )
 
@@ -86,9 +87,7 @@ def train_and_predict_linear(X_train_all, y_train_all, X_test):
     y_train_all = np.log(y_train_all + 1)  # np.log1p() でもOK
 
     y_preds = []
-    models = []
-    # CVスコア
-    scores = []
+    scores = []  # CVスコア
     kf = KFold(n_splits=5)
     for train_index, valid_index in kf.split(X_train_all):
         X_train, X_valid = (X_train_all.iloc[train_index, :], X_train_all.iloc[valid_index, :])
@@ -105,11 +104,10 @@ def train_and_predict_linear(X_train_all, y_train_all, X_test):
         elif config['model'] == "KernelRidge":
             lr = KernelRidgeWrapper()
 
-        y_pred, y_valid_pred, model = lr.train_and_predict(X_train, X_valid, y_train, y_valid, X_test, params)
+        y_pred, y_valid_pred, m = lr.train_and_predict(X_train, X_valid, y_train, y_valid, X_test, params)
 
         # 結果の保存
         y_preds.append(y_pred)
-        models.append(model)
 
         # スコア
         rmse_valid = evaluate_score(y_valid, y_valid_pred, config['loss'])
