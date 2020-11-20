@@ -1,5 +1,5 @@
 {
-    "model": "lightgbm",
+    "model": "LightGBM",
     "features": [
         "label_encode_features",
         "numerical_features",

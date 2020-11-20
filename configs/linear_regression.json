@@ -1,0 +1,14 @@
+{
+    "model": "LinearRegression",
+    "features": [
+        "label_encode_features",
+        "numerical_features",
+        "object_features",
+        "new_numerical"
+        ],
+    "params": {
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}

@@ -31,7 +31,9 @@ class LightGBM(Model):
             callbacks=callbacks
         )
 
+        # valid を予測する
+        y_valid_pred = model.predict(X_valid, num_iteration=model.best_iteration)
         # テストデータを予測する
         y_pred = model.predict(X_test, num_iteration=model.best_iteration)
 
-        return y_pred, model
+        return y_pred, y_valid_pred, model

@@ -1,0 +1,15 @@
+{
+    "model": "Lasso",
+    "features": [
+        "label_encode_features",
+        "numerical_features",
+        "object_features",
+        "new_numerical"
+        ],
+    "params": {
+        "alpha" : 0.0005
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}
