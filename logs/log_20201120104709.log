@@ -1,0 +1,83 @@
+DEBUG:root:./logs/log_20201120104709.log
+DEBUG:root:config: ./configs/default.json
+DEBUG:root:['label_encode_features', 'numerical_features', 'object_features', 'new_numerical']
+DEBUG:root:{'learning_rate': 0.05, 'num_leaves': 5, 'boosting_type': 'gbdt', 'colsample_bytree': 0.65, 'reg_alpha': 1, 'reg_lambda': 1, 'objective': 'root_mean_squared_error', 'max_bin': 55, 'bagging_fraction': 0.8, 'bagging_freq': 5, 'feature_fraction': 0.2319, 'feature_fraction_seed': 9, 'bagging_seed': 9, 'min_data_in_leaf': 6, 'min_sum_hessian_in_leaf': 1}
+DEBUG:root:X_train_all shape: (1458, 227)
+DEBUG:main:[30]	valid_0's rmse: 0.198014
+DEBUG:main:[60]	valid_0's rmse: 0.149259
+DEBUG:main:[90]	valid_0's rmse: 0.13211
+DEBUG:main:[120]	valid_0's rmse: 0.123639
+DEBUG:main:[150]	valid_0's rmse: 0.11983
+DEBUG:main:[180]	valid_0's rmse: 0.116936
+DEBUG:main:[210]	valid_0's rmse: 0.114987
+DEBUG:main:[240]	valid_0's rmse: 0.113953
+DEBUG:main:[270]	valid_0's rmse: 0.112947
+DEBUG:main:[300]	valid_0's rmse: 0.112459
+DEBUG:main:[330]	valid_0's rmse: 0.112014
+DEBUG:main:[360]	valid_0's rmse: 0.111729
+DEBUG:root:	best_iteration: 350
+DEBUG:root:	best_score: 0.11155456173927689
+DEBUG:main:[30]	valid_0's rmse: 0.229718
+DEBUG:main:[60]	valid_0's rmse: 0.17128
+DEBUG:main:[90]	valid_0's rmse: 0.15052
+DEBUG:main:[120]	valid_0's rmse: 0.141602
+DEBUG:main:[150]	valid_0's rmse: 0.136354
+DEBUG:main:[180]	valid_0's rmse: 0.133067
+DEBUG:main:[210]	valid_0's rmse: 0.131352
+DEBUG:main:[240]	valid_0's rmse: 0.129873
+DEBUG:main:[270]	valid_0's rmse: 0.128452
+DEBUG:main:[300]	valid_0's rmse: 0.127943
+DEBUG:main:[330]	valid_0's rmse: 0.127133
+DEBUG:main:[360]	valid_0's rmse: 0.126595
+DEBUG:main:[390]	valid_0's rmse: 0.126254
+DEBUG:main:[420]	valid_0's rmse: 0.125765
+DEBUG:main:[450]	valid_0's rmse: 0.125276
+DEBUG:root:	best_iteration: 449
+DEBUG:root:	best_score: 0.12523560887021473
+DEBUG:main:[30]	valid_0's rmse: 0.2265
+DEBUG:main:[60]	valid_0's rmse: 0.171172
+DEBUG:main:[90]	valid_0's rmse: 0.15272
+DEBUG:main:[120]	valid_0's rmse: 0.143476
+DEBUG:main:[150]	valid_0's rmse: 0.138304
+DEBUG:main:[180]	valid_0's rmse: 0.135479
+DEBUG:main:[210]	valid_0's rmse: 0.133887
+DEBUG:main:[240]	valid_0's rmse: 0.132295
+DEBUG:main:[270]	valid_0's rmse: 0.130821
+DEBUG:main:[300]	valid_0's rmse: 0.129912
+DEBUG:main:[330]	valid_0's rmse: 0.129015
+DEBUG:main:[360]	valid_0's rmse: 0.128486
+DEBUG:main:[390]	valid_0's rmse: 0.127977
+DEBUG:main:[420]	valid_0's rmse: 0.127714
+DEBUG:root:	best_iteration: 415
+DEBUG:root:	best_score: 0.1276871499049123
+DEBUG:main:[30]	valid_0's rmse: 0.204288
+DEBUG:main:[60]	valid_0's rmse: 0.154976
+DEBUG:main:[90]	valid_0's rmse: 0.136725
+DEBUG:main:[120]	valid_0's rmse: 0.128634
+DEBUG:main:[150]	valid_0's rmse: 0.124044
+DEBUG:main:[180]	valid_0's rmse: 0.12091
+DEBUG:main:[210]	valid_0's rmse: 0.118572
+DEBUG:main:[240]	valid_0's rmse: 0.117276
+DEBUG:main:[270]	valid_0's rmse: 0.116482
+DEBUG:main:[300]	valid_0's rmse: 0.115866
+DEBUG:main:[330]	valid_0's rmse: 0.115166
+DEBUG:main:[360]	valid_0's rmse: 0.114336
+DEBUG:main:[390]	valid_0's rmse: 0.113783
+DEBUG:root:	best_iteration: 400
+DEBUG:root:	best_score: 0.11344731247576788
+DEBUG:main:[30]	valid_0's rmse: 0.21081
+DEBUG:main:[60]	valid_0's rmse: 0.156977
+DEBUG:main:[90]	valid_0's rmse: 0.138123
+DEBUG:main:[120]	valid_0's rmse: 0.129013
+DEBUG:main:[150]	valid_0's rmse: 0.124243
+DEBUG:main:[180]	valid_0's rmse: 0.121018
+DEBUG:main:[210]	valid_0's rmse: 0.118835
+DEBUG:main:[240]	valid_0's rmse: 0.117485
+DEBUG:main:[270]	valid_0's rmse: 0.116472
+DEBUG:main:[300]	valid_0's rmse: 0.11534
+DEBUG:main:[330]	valid_0's rmse: 0.114496
+DEBUG:root:	best_iteration: 340
+DEBUG:root:	best_score: 0.11433919361738618
+DEBUG:root:===CV scores===
+DEBUG:root:[0.11155456173927689, 0.12523560887021473, 0.1276871499049123, 0.11344731247576788, 0.11433919361738618]
+DEBUG:root:0.11845276532151161

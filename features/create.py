@@ -69,6 +69,7 @@ def fillna_numerical(features):
     return features
 
 
+# thinking orders
 label_cols = ['FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond',
               'ExterQual', 'ExterCond', 'HeatingQC',  'KitchenQual', 'BsmtFinType1',
               'BsmtFinType2', 'Functional', 'Fence', 'BsmtExposure', 'GarageFinish', 'LandSlope',
