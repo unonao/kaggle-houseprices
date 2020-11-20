@@ -1,10 +1,8 @@
 {
     "model": "Ridge",
     "features": [
-        "label_encode_features",
         "numerical_features",
-        "object_features",
-        "new_numerical"
+        "object_features"
         ],
     "params": {
         "alpha" : 5.0

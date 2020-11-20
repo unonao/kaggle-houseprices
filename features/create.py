@@ -10,9 +10,20 @@ from scipy.stats import boxcox_normmax
 Feature.dir = 'features'
 
 
+def fillna_numerical(features):
+    # (numerical) Fill the remaining columns as None
+    numerics = features.dtypes[features.dtypes != "object"].index
+    features[numerics] = features[numerics].fillna(0)
+    return features
+
+
 def fillna_categorical(features):
+    features['LotFrontage'] = features.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.mean()))
+
     # Filling these columns With most suitable value for these columns
     features['Functional'] = features['Functional'].fillna('Typ')
+
+    features['Utilities'] = features['Utilities'].fillna('AllPub')
     features['Electrical'] = features['Electrical'].fillna("SBrkr")
     features['KitchenQual'] = features['KitchenQual'].fillna("TA")
 
@@ -34,107 +45,84 @@ def fillna_categorical(features):
         features[col] = features[col].fillna('None')
 
     #  Idea is that similar MSSubClasses will have similar MSZoning
+    features['MSSubClass'] = features['MSSubClass'].astype(str)
     features['MSZoning'] = features.groupby('MSSubClass')['MSZoning'].transform(lambda x: x.fillna(x.mode()[0]))
 
+    features['YrSold'] = features['YrSold'].astype(str)
+    features['MoSold'] = features['MoSold'].astype(str)
+
     # (object) Fill the remaining columns as None
-    objects = []
-    for i in features.columns:
-        if features[i].dtype == object:
-            objects.append(i)
-    features.update(features[objects].fillna('None'))
+
+    objects = features.dtypes[features.dtypes == "object"].index
+    features[objects] = features[objects].fillna('None')
 
     return features
 
 
-def fillna_numerical(features):
-    # (numerical) Fill the remaining columns as None
-    features['LotFrontage'] = features.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median()))
-
-    numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-    numerics = []
-    for i in features.columns:
-        if features[i].dtype in numeric_dtypes:
-            numerics.append(i)
-    features.update(features[numerics].fillna(0))
-
-    # change distribution using box cox
-    skew_features = features[numerics].apply(lambda x: skew(x)).sort_values(ascending=False)
-
-    high_skew = skew_features[skew_features > 0.5]
-    skew_index = high_skew.index
-
-    for i in skew_index:
-        features[i] = boxcox1p(features[i], boxcox_normmax(features[i] + 1))
-
+def create_features(features):
+    # Adding new features . Make sure that you understand this.
+    features['YrBltAndRemod'] = features['YearBuilt']+features['YearRemodAdd']
+    features['TotalSF'] = features['TotalBsmtSF'] + features['1stFlrSF'] + features['2ndFlrSF']
+    features['Total_sqr_footage'] = (features['BsmtFinSF1'] + features['BsmtFinSF2'] +
+                                     features['1stFlrSF'] + features['2ndFlrSF'])
+    features['Total_Bathrooms'] = (features['FullBath'] + (0.5 * features['HalfBath']) +
+                                   features['BsmtFullBath'] + (0.5 * features['BsmtHalfBath']))
+    features['Total_porch_sf'] = (features['OpenPorchSF'] + features['3SsnPorch'] +
+                                  features['EnclosedPorch'] + features['ScreenPorch'] +
+                                  features['WoodDeckSF'])
+    # For ex, if PoolArea = 0 , Then HasPool = 0 too
+    features['haspool'] = features['PoolArea'].apply(lambda x: 1 if x > 0 else 0)
+    features['has2ndfloor'] = features['2ndFlrSF'].apply(lambda x: 1 if x > 0 else 0)
+    features['hasgarage'] = features['GarageArea'].apply(lambda x: 1 if x > 0 else 0)
+    features['hasbsmt'] = features['TotalBsmtSF'].apply(lambda x: 1 if x > 0 else 0)
+    features['hasfireplace'] = features['Fireplaces'].apply(lambda x: 1 if x > 0 else 0)
     return features
 
 
-# thinking orders
-label_cols = ['FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond',
-              'ExterQual', 'ExterCond', 'HeatingQC',  'KitchenQual', 'BsmtFinType1',
-              'BsmtFinType2', 'Functional', 'Fence', 'BsmtExposure', 'GarageFinish', 'LandSlope',
-              'LotShape', 'PavedDrive',  'Alley', 'CentralAir', 'MSSubClass', 'OverallCond',
-              'YrSold', 'MoSold']
-# 'PoolQC','Street',
+def fixing_skewness(df):
+    """
+    This function takes in a dataframe and return fixed skewed dataframe
+    """
+
+    # Getting all the data that are not of "object" type.
+    numeric_feats = df.dtypes[df.dtypes != "object"].index
+
+    # Check the skew of all numerical features
+    skewed_feats = df[numeric_feats].apply(lambda x: skew(x)).sort_values(ascending=False)
+    high_skew = skewed_feats[abs(skewed_feats) > 0.5]
+    skewed_features = high_skew.index
+
+    for feat in skewed_features:
+        df[feat] = boxcox1p(df[feat], boxcox_normmax(df[feat] + 1))
 
 
-class LabelEncodeFeatures(Feature):
-    def create_features(self):
-        # process columns, apply LabelEncoder to categorical features
-        for c in label_cols:
-            features[c] = features[c].astype(str)
-            lbl = LabelEncoder()
-            lbl.fit(list(features[c].values))
-            features[c] = lbl.transform(list(features[c].values))
-            self.train[c] = features[:train.shape[0]][c]
-            self.test[c] = features[train.shape[0]:][c]
+def overfit_reducer(df):
+    """
+    This function takes in a dataframe and returns a list of features that are overfitted.
+    """
+    overfit = []
+    for i in df.columns:
+        counts = df[i].value_counts()
+        zeros = counts.iloc[0]
+        if zeros / len(df) * 100 > 94.2:
+            overfit.append(i)
+    overfit = list(overfit)
+    return overfit
 
 
 class ObjectFeatures(Feature):
     def create_features(self):
-        objects = []
-        for i in features.columns:
-            if features[i].dtype == object and (i not in label_cols):
-                objects.append(i)
+        objects = features.dtypes[features.dtypes == "object"].index
         final_features = pd.get_dummies(features[objects])
-
         self.train = final_features[:train.shape[0]]
         self.test = final_features[train.shape[0]:]
 
 
 class NumericalFeatures(Feature):
     def create_features(self):
-        numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-        numerics = []
-        for i in features.columns:
-            if features[i].dtype in numeric_dtypes and (i not in label_cols):
-                numerics.append(i)
+        numerics = features.dtypes[features.dtypes != "object"].index
         self.train[numerics] = features[:train.shape[0]][numerics]
         self.test[numerics] = features[train.shape[0]:][numerics]
-
-
-class NewNumerical(Feature):
-    def create_features(self):
-        cols = ['YrBltAndRemod', 'TotalSF', 'Total_sqr_footage', 'Total_Bathrooms', 'Total_porch_sf', 'haspool', 'has2ndfloor', 'hasgarage', 'hasbsmt', 'hasfireplace']
-        # Adding new features . Make sure that you understand this.
-        features['YrBltAndRemod'] = features['YearBuilt']+features['YearRemodAdd']
-        features['TotalSF'] = features['TotalBsmtSF'] + features['1stFlrSF'] + features['2ndFlrSF']
-        features['Total_sqr_footage'] = (features['BsmtFinSF1'] + features['BsmtFinSF2'] +
-                                         features['1stFlrSF'] + features['2ndFlrSF'])
-        features['Total_Bathrooms'] = (features['FullBath'] + (0.5 * features['HalfBath']) +
-                                       features['BsmtFullBath'] + (0.5 * features['BsmtHalfBath']))
-        features['Total_porch_sf'] = (features['OpenPorchSF'] + features['3SsnPorch'] +
-                                      features['EnclosedPorch'] + features['ScreenPorch'] +
-                                      features['WoodDeckSF'])
-        # For ex, if PoolArea = 0 , Then HasPool = 0 too
-        features['haspool'] = features['PoolArea'].apply(lambda x: 1 if x > 0 else 0)
-        features['has2ndfloor'] = features['2ndFlrSF'].apply(lambda x: 1 if x > 0 else 0)
-        features['hasgarage'] = features['GarageArea'].apply(lambda x: 1 if x > 0 else 0)
-        features['hasbsmt'] = features['TotalBsmtSF'].apply(lambda x: 1 if x > 0 else 0)
-        features['hasfireplace'] = features['Fireplaces'].apply(lambda x: 1 if x > 0 else 0)
-
-        self.train[cols] = features[:train.shape[0]][cols]
-        self.test[cols] = features[train.shape[0]:][cols]
 
 
 if __name__ == '__main__':
@@ -144,9 +132,13 @@ if __name__ == '__main__':
     features = pd.concat([train.drop(['Id', 'SalePrice'], axis=1), test.drop('Id', axis=1)])
 
     # Removing features that are not very useful . This can be understood only by doing proper EDA on data
-    features = features.drop(['Utilities', 'Street', 'PoolQC', ], axis=1)
     features = fillna_numerical(features)
     features = fillna_categorical(features)
-    print(features.shape)
+    features = create_features(features)
+    features = features.drop(['Utilities', 'Street', 'PoolQC', ], axis=1)
+    fixing_skewness(features)
 
+    overfitted_features = overfit_reducer(features[:train.shape[0]])
+    print(overfitted_features)
+    features = features.drop(overfitted_features, axis=1)
     generate_features(globals(), args.force)

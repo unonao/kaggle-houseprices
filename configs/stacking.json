@@ -1,10 +1,8 @@
 {
     "model": "stacking",
     "features": [
-        "label_encode_features",
         "numerical_features",
-        "object_features",
-        "new_numerical"
+        "object_features"
     ],
     "base_models":{
         "LightGBM":"default.json",
@@ -13,7 +11,7 @@
         "Lasso":"lasso.json",
         "Ridge":"ridge.json"
     },
-    "meta_model": "LinearRegression",
+    "meta_model": "Lasso",
     "params":{
         "alpha" : 0.0005
     },
