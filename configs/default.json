@@ -1,12 +1,13 @@
 {
     "features": [
+        "label_encode_features",
         "numerical_features",
         "object_features",
         "new_numerical"
         ],
     "lgbm_params": {
-        "learning_rate": 0.1,
-        "num_leaves": 2,
+        "learning_rate": 0.01,
+        "num_leaves": 4,
         "boosting_type": "gbdt",
         "colsample_bytree": 0.65,
         "reg_alpha": 1,

@@ -69,11 +69,31 @@ def fillna_numerical(features):
     return features
 
 
+label_cols = ['FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond',
+              'ExterQual', 'ExterCond', 'HeatingQC',  'KitchenQual', 'BsmtFinType1',
+              'BsmtFinType2', 'Functional', 'Fence', 'BsmtExposure', 'GarageFinish', 'LandSlope',
+              'LotShape', 'PavedDrive',  'Alley', 'CentralAir', 'MSSubClass', 'OverallCond',
+              'YrSold', 'MoSold']
+# 'PoolQC','Street',
+
+
+class LabelEncodeFeatures(Feature):
+    def create_features(self):
+        # process columns, apply LabelEncoder to categorical features
+        for c in label_cols:
+            features[c] = features[c].astype(str)
+            lbl = LabelEncoder()
+            lbl.fit(list(features[c].values))
+            features[c] = lbl.transform(list(features[c].values))
+            self.train[c] = features[:train.shape[0]][c]
+            self.test[c] = features[train.shape[0]:][c]
+
+
 class ObjectFeatures(Feature):
     def create_features(self):
         objects = []
         for i in features.columns:
-            if features[i].dtype == object:
+            if features[i].dtype == object and (i not in label_cols):
                 objects.append(i)
         final_features = pd.get_dummies(features[objects])
 
@@ -86,7 +106,7 @@ class NumericalFeatures(Feature):
         numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
         numerics = []
         for i in features.columns:
-            if features[i].dtype in numeric_dtypes:
+            if features[i].dtype in numeric_dtypes and (i not in label_cols):
                 numerics.append(i)
         self.train[numerics] = features[:train.shape[0]][numerics]
         self.test[numerics] = features[train.shape[0]:][numerics]
