@@ -5,7 +5,7 @@
         "object_features"
         ],
     "params": {
-        "alpha" : 0.00044227928994987245
+        "alpha" : 0.0006320636127160412
     },
     "loss": "rmse",
     "target_name": "SalePrice",

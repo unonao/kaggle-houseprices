@@ -5,7 +5,13 @@
         "object_features"
         ],
     "params": {
-        "n_estimators": 1000
+                "n_estimators": 100,
+                "criterion": "mse",
+                "max_depth": 30,
+                "min_samples_split":  0.0020129928930074648,
+                "min_samples_leaf": 1,
+                "max_features":"sqrt",
+                "random_state" :7
     },
     "loss": "rmse",
     "target_name": "SalePrice",

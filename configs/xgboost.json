@@ -5,14 +5,14 @@
         "object_features"
         ],
     "params": {
-        "colsample_bytree":0.4603,
-        "gamma":0.0468,
-        "learning_rate":0.05,
+        "colsample_bytree":0.6959168479765205,
+        "gamma":0.00679351239097101,
+        "learning_rate":0.1,
         "max_depth":3,
-        "min_child_weight":1.7817,
+        "min_child_weight":1.204206891928091,
         "n_estimators":2200,
-        "reg_lambda":0.8571,
-        "subsample":0.5213,
+        "reg_lambda":0.4013441917300995,
+        "subsample":0.9834112317433976,
         "random_state" :7,
         "nthread" : -1
     },

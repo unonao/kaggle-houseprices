@@ -6,7 +6,8 @@
     ],
     "base_models":{
         "LightGBM":"default.json",
-        "ErasticNet":"erastic_net.json",
+        "XGBoost":"xgboost.json",
+        "ELasticNet":"elastic_net.json",
         "KernelRidge":"kernel_ridge.json",
         "Lasso":"lasso.json",
         "Ridge":"ridge.json",

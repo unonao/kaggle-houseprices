@@ -1,0 +1,14 @@
+{
+    "model": "ELasticNet",
+    "features": [
+        "numerical_features",
+        "object_features"
+        ],
+    "params": {
+        "alpha" : 0.0005958821579546562,
+        "l1_ratio": 0.9497862368719193
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}
