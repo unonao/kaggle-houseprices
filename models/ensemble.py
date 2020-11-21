@@ -4,6 +4,7 @@ from logs.logger import log_evaluation, log_evaluation_xgb
 import pandas as pd
 import lightgbm as lgb
 import xgboost as xgb
+from catboost import CatBoostRegressor as cat
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import RandomForestRegressor
 
@@ -27,6 +28,17 @@ class RandomForestWrapper(Model):
 class GradientBoostingRegressorWrapper(Model):
     def train_and_predict(self, X_train, X_valid, y_train, y_valid, X_test, params):
         reg = make_pipeline(RobustScaler(), GradientBoostingRegressor(**params))
+        reg.fit(X_train, y_train)
+
+        # テストデータを予測する
+        y_valid_pred = reg.predict(X_valid)
+        y_pred = reg.predict(X_test)
+        return y_pred, y_valid_pred, reg
+
+
+class CatBoost(Model):
+    def train_and_predict(self, X_train, X_valid, y_train, y_valid, X_test, params):
+        reg = make_pipeline(RobustScaler(), cat(**params))
         reg.fit(X_train, y_train)
 
         # テストデータを予測する

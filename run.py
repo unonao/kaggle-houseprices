@@ -9,7 +9,7 @@ import numpy as np
 
 from utils import load_datasets, load_target, evaluate_score
 from logs.logger import log_best
-from models import LightGBM, LinearRegressionWrapper, LassoWrapper, RidgeWrapper, ElasticNetWrapper, KernelRidgeWrapper, SVRWrapper, XGBoost, RandomForestWrapper, GradientBoostingRegressorWrapper
+from models import LightGBM, LinearRegressionWrapper, LassoWrapper, RidgeWrapper, ElasticNetWrapper, KernelRidgeWrapper, SVRWrapper, XGBoost, RandomForestWrapper, GradientBoostingRegressorWrapper, CatBoost
 
 # 引数で config の設定を行う
 parser = argparse.ArgumentParser()
@@ -111,6 +111,8 @@ def train_and_predict_linear(X_train_all, y_train_all, X_test):
             lr = RandomForestWrapper()
         elif config['model'] == "GradientBoosting":
             lr = GradientBoostingRegressorWrapper()
+        elif config['model'] == "CatBoost":
+            lr = CatBoost()
         y_pred, y_valid_pred, m = lr.train_and_predict(X_train, X_valid, y_train, y_valid, X_test, params)
 
         # 結果の保存
@@ -159,7 +161,7 @@ def main():
     logging.debug("X_train_all shape: {}".format(X_train_all.shape))
     if config['model'] == 'LightGBM':
         train_and_predict_lightgbm(X_train_all, y_train_all, X_test)
-    elif config['model'] in ['LinearRegression', 'Lasso', 'Ridge', 'ELasticNet', 'KernelRidge', "SVR", "XGBoost", "RandomForest", "GradientBoosting"]:
+    elif config['model'] in ['LinearRegression', 'Lasso', 'Ridge', 'ELasticNet', 'KernelRidge', "SVR", "XGBoost", "RandomForest", "GradientBoosting", "CatBoost"]:
         train_and_predict_linear(X_train_all, y_train_all, X_test)
 
 

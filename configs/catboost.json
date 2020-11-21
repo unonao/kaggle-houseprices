@@ -1,0 +1,26 @@
+{
+    "model": "CatBoost",
+    "features": [
+        "numerical_features",
+        "object_features"
+        ],
+    "params": {
+        "iterations": 1000,
+        "learning_rate": 0.08,
+        "eval_metric": "RMSE",
+        "random_seed": 42,
+        "logging_level": "Silent",
+        "loss_function": "RMSE",
+        "od_type": "Iter",
+        "od_wait": 100,
+        "one_hot_max_size": 20,
+        "l2_leaf_reg": 100,
+        "depth": 3,
+        "rsm": 0.6,
+        "random_strength": 2,
+        "bagging_temperature": 10
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}
