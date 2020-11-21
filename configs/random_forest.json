@@ -1,0 +1,13 @@
+{
+    "model": "RandomForest",
+    "features": [
+        "numerical_features",
+        "object_features"
+        ],
+    "params": {
+        "n_estimators": 1000
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}

@@ -3,8 +3,7 @@ import logging
 
 import pandas as pd
 from sklearn.preprocessing import RobustScaler
-from sklearn.kernel_ridge import KernelRidge
-from sklearn.linear_model import ElasticNet, Lasso, Ridge,  BayesianRidge, LassoLarsIC, LinearRegression
+from sklearn.linear_model import ElasticNet, Lasso, Ridge,  BayesianRidge, LassoLarsIC, LinearRegression, RANSACRegressor
 from sklearn.pipeline import make_pipeline
 
 from models.base import Model
@@ -35,18 +34,6 @@ class LassoWrapper(Model):
 class RidgeWrapper(Model):
     def train_and_predict(self, X_train, X_valid, y_train, y_valid, X_test, params):
         lr = make_pipeline(RobustScaler(), Ridge(alpha=params['alpha']))
-        lr.fit(X_train, y_train)
-
-        # テストデータを予測する
-        y_valid_pred = lr.predict(X_valid)
-        y_pred = lr.predict(X_test)
-        return y_pred, y_valid_pred, lr
-
-
-class KernelRidgeWrapper(Model):
-    def train_and_predict(self, X_train, X_valid, y_train, y_valid, X_test, params):
-
-        lr = make_pipeline(RobustScaler(), KernelRidge(alpha=params['alpha'], kernel=params['kernel'], degree=params['degree'], coef0=params['coef0']))
         lr.fit(X_train, y_train)
 
         # テストデータを予測する

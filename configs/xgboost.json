@@ -1,0 +1,22 @@
+{
+    "model": "XGBoost",
+    "features": [
+        "numerical_features",
+        "object_features"
+        ],
+    "params": {
+        "colsample_bytree":0.4603,
+        "gamma":0.0468,
+        "learning_rate":0.05,
+        "max_depth":3,
+        "min_child_weight":1.7817,
+        "n_estimators":2200,
+        "reg_lambda":0.8571,
+        "subsample":0.5213,
+        "random_state" :7,
+        "nthread" : -1
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}
