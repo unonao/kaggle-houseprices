@@ -9,7 +9,7 @@ import numpy as np
 
 from utils import load_datasets, load_target, evaluate_score
 from logs.logger import log_best
-from models import LightGBM, LinearRegressionWrapper, LassoWrapper, RidgeWrapper, ElasticNetWrapper, KernelRidgeWrapper
+from models import LightGBM, LinearRegressionWrapper, LassoWrapper, RidgeWrapper, ElasticNetWrapper, KernelRidgeWrapper, SVRWrapper
 
 # 引数で config の設定を行う
 parser = argparse.ArgumentParser()
@@ -67,6 +67,8 @@ def stacking(X_train_all, y_train_all, X_test):
                 model = ElasticNetWrapper()
             elif name == "KernelRidge":
                 model = KernelRidgeWrapper()
+            elif name == "SVR":
+                model = SVRWrapper()
 
             y_pred, y_valid_pred, m = model.train_and_predict(X_train, X_valid, y_train, y_valid, X_test, one_config["params"])
 
@@ -109,6 +111,8 @@ def stacking(X_train_all, y_train_all, X_test):
             model = ElasticNetWrapper()
         elif name == "KernelRidge":
             model = KernelRidgeWrapper()
+        elif name == "SVR":
+            model = SVRWrapper()
 
         # 学習と推論。 y_preds_df を X_test に使用する
         y_pred, y_valid_pred, m = model.train_and_predict(X_train, X_valid, y_train, y_valid, y_preds_df, params)

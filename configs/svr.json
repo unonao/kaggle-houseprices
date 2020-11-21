@@ -1,0 +1,17 @@
+{
+    "model": "SVR",
+    "features": [
+        "numerical_features",
+        "object_features"
+        ],
+    "params": {
+        "kernel":"poly",
+        "degree": 3,
+        "coef0": 7.405346770365897,
+        "C": 1.0,
+        "epsilon": 0.1
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}

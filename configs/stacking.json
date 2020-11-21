@@ -9,7 +9,8 @@
         "ErasticNet":"erastic_net.json",
         "KernelRidge":"kernel_ridge.json",
         "Lasso":"lasso.json",
-        "Ridge":"ridge.json"
+        "Ridge":"ridge.json",
+        "SVR":"svr.json"
     },
     "meta_model": "Lasso",
     "params":{
