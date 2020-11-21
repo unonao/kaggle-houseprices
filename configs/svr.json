@@ -6,10 +6,10 @@
         ],
     "params": {
         "kernel":"poly",
-        "degree": 3,
-        "coef0": 7.405346770365897,
-        "C": 1.0,
-        "epsilon": 0.1
+        "degree": 2,
+        "coef0": 7.865345479478388,
+        "C": 0.09111385520064191,
+        "epsilon": 0.0026048466307931843
     },
     "loss": "rmse",
     "target_name": "SalePrice",
