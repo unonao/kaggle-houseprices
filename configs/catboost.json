@@ -14,11 +14,11 @@
         "od_type": "Iter",
         "od_wait": 100,
         "one_hot_max_size": 20,
-        "l2_leaf_reg": 100,
-        "depth": 3,
-        "rsm": 0.6,
-        "random_strength": 2,
-        "bagging_temperature": 10
+        "l2_leaf_reg": 1.0483649322139734,
+        "depth": 6,
+        "rsm": 0.773832260131818,
+        "random_strength": 0.4780102290257191,
+        "bagging_temperature": 29
     },
     "loss": "rmse",
     "target_name": "SalePrice",

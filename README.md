@@ -3,11 +3,8 @@
 # やること
 
 - 別のモデルを作って組み込む
-  - GradientBoosting, XGBoost, Catboost, Extra Tress, RF, KNNRegressor, Bayesian Regression
-- 特徴量選択（overfitting するものを見つける？）
-- 最後に丸め込む(ダメだった。値を変えれば良くなる？？)
-  - 大きすぎる予測を出したものが仮に小さかったとすると、罰則が大きい → 飛び出たものを中心に寄せる
-- ブレンドしてみる → 線形結合なので linear regression と変わらない（LB にオーバーフッティングさせるなら自分で調整して何度か調整するのもありか？）
+  - catboosting のチューニング
+- スタッキングのチューニング
 
 # Structures
 
