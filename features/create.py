@@ -104,7 +104,7 @@ def overfit_reducer(df):
     for i in df.columns:
         counts = df[i].value_counts()
         zeros = counts.iloc[0]
-        if zeros / len(df) * 100 > 94.2:
+        if zeros / len(df) * 100 > 98.2:
             overfit.append(i)
     overfit = list(overfit)
     return overfit
