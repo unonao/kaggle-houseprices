@@ -1,0 +1,24 @@
+{
+    "model": "stacking",
+    "features": [
+        "numerical_features",
+        "object_features"
+    ],
+    "base_models":{
+        "LightGBM":"default.json",
+        "XGBoost":"xgboost.json",
+        "CatBoost":"catboost.json",
+        "GradientBoosting":"gradient_boosting.json",
+        "ELasticNet":"elastic_net.json",
+        "KernelRidge":"kernel_ridge.json",
+        "Lasso":"lasso.json",
+        "Ridge":"ridge.json"
+    },
+    "meta_model": "Lasso",
+    "params":{
+        "alpha" : 0.0005
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}
