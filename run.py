@@ -1,7 +1,7 @@
 import pandas as pd
 import datetime
 import logging
-from sklearn.model_selection import KFold
+from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import mean_squared_log_error
 import argparse
 import json
@@ -28,6 +28,9 @@ logging.basicConfig(
     filename='./logs/log_{0}_{1:%Y%m%d%H%M%S}.log'.format(config['model'], now), level=logging.DEBUG
 )
 
+FOLDS = 3
+SK_NUM = 10
+
 
 def train_and_predict_lightgbm(X_train_all, y_train_all, X_test):
 
@@ -36,8 +39,8 @@ def train_and_predict_lightgbm(X_train_all, y_train_all, X_test):
 
     y_preds = []
     models = []
-    kf = KFold(n_splits=5)
-    for train_index, valid_index in kf.split(X_train_all):
+    kf = StratifiedKFold(n_splits=FOLDS, shuffle=True, random_state=seed)
+    for train_index, valid_index in kf.split(X_train_all, pd.qcut(y_train_all, SK_NUM, labels=[i for i in range(SK_NUM)])):
         X_train, X_valid = (X_train_all.iloc[train_index, :], X_train_all.iloc[valid_index, :])
         y_train, y_valid = (y_train_all.iloc[train_index], y_train_all.iloc[valid_index])
 
@@ -88,8 +91,8 @@ def train_and_predict_linear(X_train_all, y_train_all, X_test):
 
     y_preds = []
     scores = []  # CVスコア
-    kf = KFold(n_splits=5)
-    for train_index, valid_index in kf.split(X_train_all):
+    kf = StratifiedKFold(n_splits=FOLDS, shuffle=True, random_state=seed)
+    for train_index, valid_index in kf.split(X_train_all, pd.qcut(y_train_all, SK_NUM, labels=[i for i in range(SK_NUM)])):
         X_train, X_valid = (X_train_all.iloc[train_index, :], X_train_all.iloc[valid_index, :])
         y_train, y_valid = (y_train_all.iloc[train_index], y_train_all.iloc[valid_index])
 

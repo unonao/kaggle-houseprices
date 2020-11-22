@@ -12,9 +12,8 @@
         "ELasticNet":"elastic_net.json",
         "Lasso":"lasso.json"
     },
-    "meta_model": "Lasso",
+    "meta_model": "LinearRegression",
     "params":{
-        "alpha" : 1e-6
     },
     "loss": "rmse",
     "target_name": "SalePrice",

@@ -1,0 +1,26 @@
+{
+    "model": "LightGBM",
+    "features": [
+        "all_features"
+        ],
+    "params": {
+        "learning_rate": 0.05,
+        "num_leaves": 9,
+        "boosting_type": "gbdt",
+        "colsample_bytree": 0.7270015196871651,
+        "reg_alpha": 0.33858409141362755,
+        "reg_lambda": 0.749028887833709,
+        "objective": "root_mean_squared_error",
+        "max_bin" : 55,
+        "bagging_fraction" : 0.8105497285545641,
+        "bagging_freq" : 5,
+        "feature_fraction" : 0.41935759813141693,
+        "feature_fraction_seed":9,
+        "bagging_seed":9,
+        "min_data_in_leaf" :3,
+        "min_sum_hessian_in_leaf" : 1
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}

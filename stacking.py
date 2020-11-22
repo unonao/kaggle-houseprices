@@ -1,7 +1,7 @@
 import pandas as pd
 import datetime
 import logging
-from sklearn.model_selection import KFold
+from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import mean_squared_log_error
 import argparse
 import json
@@ -28,8 +28,9 @@ logging.basicConfig(
 )
 
 # FOLDS 数
-BASE_FOLDS = 5
-META_FOLDS = 5
+BASE_FOLDS = 3
+META_FOLDS = 3
+SK_NUM = 10
 
 
 def stacking(X_train_all, y_train_all, X_test):
@@ -51,8 +52,8 @@ def stacking(X_train_all, y_train_all, X_test):
         #y_preds = np.zeros((X_test.shape[0], 1))
         y_preds = []
         scores = []
-        kf = KFold(n_splits=BASE_FOLDS)
-        for train_index, valid_index in kf.split(X_train_all):
+        kf = StratifiedKFold(n_splits=BASE_FOLDS, shuffle=True, random_state=seed)
+        for train_index, valid_index in kf.split(X_train_all, pd.qcut(y_train_all, SK_NUM, labels=[i for i in range(SK_NUM)])):
             X_train, X_valid = (X_train_all.iloc[train_index, :], X_train_all.iloc[valid_index, :])
             y_train, y_valid = (y_train_all.iloc[train_index], y_train_all.iloc[valid_index])
             if name == "LightGBM":
@@ -102,8 +103,8 @@ def stacking(X_train_all, y_train_all, X_test):
     # meta model の学習
     y_preds = []
     scores = []
-    kf = KFold(n_splits=META_FOLDS)
-    for train_index, valid_index in kf.split(oof_df):
+    kf = StratifiedKFold(n_splits=META_FOLDS, shuffle=True, random_state=seed)
+    for train_index, valid_index in kf.split(X_train_all, pd.qcut(y_train_all, SK_NUM, labels=[i for i in range(SK_NUM)])):
         X_train, X_valid = (oof_df.iloc[train_index, :], oof_df.iloc[valid_index, :])
         y_train, y_valid = (y_train_all.iloc[train_index], y_train_all.iloc[valid_index])
         name = config['meta_model']
