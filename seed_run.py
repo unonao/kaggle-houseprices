@@ -31,7 +31,7 @@ logging.basicConfig(
 SEED = [0, 1, 2, 3, 4, 5]
 
 FOLDS = 3
-SK_NUM = 10
+SK_NUM = 50
 
 
 def train_and_predict_lightgbm(X_train_all, y_train_all, X_test):

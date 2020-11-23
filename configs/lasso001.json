@@ -1,0 +1,14 @@
+{
+    "model": "Lasso",
+    "features": [
+        "temporal",
+        "numerical",
+        "objects"
+        ],
+    "params": {
+        "alpha" : 0.0005
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}

@@ -30,7 +30,7 @@ logging.basicConfig(
 # FOLDS 数
 BASE_FOLDS = 3
 META_FOLDS = 3
-SK_NUM = 10
+SK_NUM = 50
 
 SEED = [0, 1, 2, 3, 4]
 
