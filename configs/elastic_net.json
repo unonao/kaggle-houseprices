@@ -1,8 +1,9 @@
 {
-    "model": "ELasticNet",
+    "model": "ElasticNet",
     "features": [
-        "numerical_features",
-        "object_features"
+        "temporal",
+        "numerical",
+        "objects"
         ],
     "params": {
         "alpha" : 0.0005958821579546562,

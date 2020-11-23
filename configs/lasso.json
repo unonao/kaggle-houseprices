@@ -1,8 +1,9 @@
 {
     "model": "Lasso",
     "features": [
-        "numerical_features",
-        "object_features"
+        "temporal",
+        "numerical",
+        "objects"
         ],
     "params": {
         "alpha" : 0.0006320636127160412

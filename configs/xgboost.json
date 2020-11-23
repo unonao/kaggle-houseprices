@@ -1,8 +1,9 @@
 {
     "model": "XGBoost",
     "features": [
-        "numerical_features",
-        "object_features"
+        "temporal",
+        "numerical",
+        "objects"
         ],
     "params": {
         "colsample_bytree":0.6959168479765205,

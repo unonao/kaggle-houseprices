@@ -1,8 +1,9 @@
 {
     "model": "RandomForest",
     "features": [
-        "numerical_features",
-        "object_features"
+        "temporal",
+        "numerical",
+        "objects"
         ],
     "params": {
                 "n_estimators": 100,

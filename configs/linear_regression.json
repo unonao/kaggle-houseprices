@@ -1,8 +1,9 @@
 {
     "model": "LinearRegression",
     "features": [
-        "numerical_features",
-        "object_features"
+        "temporal",
+        "numerical",
+        "objects"
         ],
     "params": {
     },

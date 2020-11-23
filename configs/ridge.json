@@ -1,8 +1,9 @@
 {
     "model": "Ridge",
     "features": [
-        "numerical_features",
-        "object_features"
+        "temporal",
+        "numerical",
+        "objects"
         ],
     "params": {
         "alpha" : 21.580134483773218

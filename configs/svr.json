@@ -1,8 +1,9 @@
 {
     "model": "SVR",
     "features": [
-        "numerical_features",
-        "object_features"
+        "temporal",
+        "numerical",
+        "objects"
         ],
     "params": {
         "kernel":"poly",

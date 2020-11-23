@@ -1,8 +1,9 @@
 {
     "model": "LightGBM",
     "features": [
-        "numerical_features",
-        "object_features"
+        "temporal",
+        "numerical",
+        "objects"
         ],
     "params": {
         "learning_rate": 0.05,

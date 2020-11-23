@@ -35,6 +35,7 @@ SK_NUM = 50
 
 
 def train_and_predict_lightgbm(X_train_all, y_train_all, X_test):
+    qcut_target = pd.qcut(y_train_all, SK_NUM, labels=False)
 
     # 学習前にy_trainに、log(y+1)で変換
     y_train_all = np.log(y_train_all + 1)  # np.log1p() でもOK
@@ -43,7 +44,7 @@ def train_and_predict_lightgbm(X_train_all, y_train_all, X_test):
     models = []
     for seed in SEED:
         kf = StratifiedKFold(n_splits=FOLDS, shuffle=True, random_state=seed)
-        for train_index, valid_index in kf.split(X_train_all, pd.qcut(y_train_all, SK_NUM, labels=[i for i in range(SK_NUM)])):
+        for train_index, valid_index in kf.split(X_train_all, qcut_target):
             X_train, X_valid = (X_train_all.iloc[train_index, :], X_train_all.iloc[valid_index, :])
             y_train, y_valid = (y_train_all.iloc[train_index], y_train_all.iloc[valid_index])
 
@@ -88,6 +89,7 @@ def train_and_predict_lightgbm(X_train_all, y_train_all, X_test):
 
 
 def train_and_predict_linear(X_train_all, y_train_all, X_test):
+    qcut_target = pd.qcut(y_train_all, SK_NUM, labels=False)
 
     # 学習前にy_trainに、log(y+1)で変換
     y_train_all = np.log(y_train_all + 1)  # np.log1p() でもOK
@@ -96,7 +98,7 @@ def train_and_predict_linear(X_train_all, y_train_all, X_test):
     scores = []  # CVスコア
     for seed in SEED:
         kf = StratifiedKFold(n_splits=FOLDS, shuffle=True, random_state=seed)
-        for train_index, valid_index in kf.split(X_train_all, pd.qcut(y_train_all, SK_NUM, labels=[i for i in range(SK_NUM)])):
+        for train_index, valid_index in kf.split(X_train_all, qcut_target):
             X_train, X_valid = (X_train_all.iloc[train_index, :], X_train_all.iloc[valid_index, :])
             y_train, y_valid = (y_train_all.iloc[train_index], y_train_all.iloc[valid_index])
 
@@ -106,7 +108,7 @@ def train_and_predict_linear(X_train_all, y_train_all, X_test):
                 lr = LassoWrapper()
             elif config['model'] == "Ridge":
                 lr = RidgeWrapper()
-            elif config['model'] == "ELasticNet":
+            elif config['model'] == "ElasticNet":
                 lr = ElasticNetWrapper()
             elif config['model'] == "KernelRidge":
                 lr = KernelRidgeWrapper()
@@ -168,7 +170,7 @@ def main():
     logging.debug("X_train_all shape: {}".format(X_train_all.shape))
     if config['model'] == 'LightGBM':
         train_and_predict_lightgbm(X_train_all, y_train_all, X_test)
-    elif config['model'] in ['LinearRegression', 'Lasso', 'Ridge', 'ELasticNet', 'KernelRidge', "SVR", "XGBoost", "RandomForest", "GradientBoosting", "CatBoost"]:
+    elif config['model'] in ['LinearRegression', 'Lasso', 'Ridge', 'ElasticNet', 'KernelRidge', "SVR", "XGBoost", "RandomForest", "GradientBoosting", "CatBoost"]:
         train_and_predict_linear(X_train_all, y_train_all, X_test)
 
 

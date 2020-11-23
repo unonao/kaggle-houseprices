@@ -1,12 +1,13 @@
 {
     "model": "CatBoost",
     "features": [
-        "numerical_features",
-        "object_features"
+        "temporal",
+        "numerical",
+        "objects"
         ],
     "params": {
-        "iterations": 1000,
         "learning_rate": 0.08,
+        "iterations": 1000,
         "eval_metric": "RMSE",
         "random_seed": 42,
         "logging_level": "Silent",

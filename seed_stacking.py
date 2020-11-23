@@ -36,7 +36,9 @@ SEED = [0, 1, 2, 3, 4]
 
 
 def stacking(X_train_all, y_train_all, X_test):
+    qcut_target = pd.qcut(y_train_all, SK_NUM, labels=False)
 
+    print(qcut_target)
     # 学習前にy_trainに、log(y+1)で変換
     y_train_all = np.log(y_train_all + 1)  # np.log1p() でもOK
 
@@ -56,7 +58,7 @@ def stacking(X_train_all, y_train_all, X_test):
         scores = []
         for seed in SEED:
             kf = StratifiedKFold(n_splits=BASE_FOLDS, shuffle=True, random_state=seed)
-            for train_index, valid_index in kf.split(X_train_all, pd.qcut(y_train_all, SK_NUM, labels=[i for i in range(SK_NUM)])):
+            for train_index, valid_index in kf.split(X_train_all, qcut_target):
                 X_train, X_valid = (X_train_all.iloc[train_index, :], X_train_all.iloc[valid_index, :])
                 y_train, y_valid = (y_train_all.iloc[train_index], y_train_all.iloc[valid_index])
                 if name == "LightGBM":
@@ -67,7 +69,7 @@ def stacking(X_train_all, y_train_all, X_test):
                     model = LassoWrapper()
                 elif name == "Ridge":
                     model = RidgeWrapper()
-                elif name == "ELasticNet":
+                elif name == "ElasticNet":
                     model = ElasticNetWrapper()
                 elif name == "KernelRidge":
                     model = KernelRidgeWrapper()
@@ -123,7 +125,7 @@ def stacking(X_train_all, y_train_all, X_test):
     y_preds = []
     scores = []
     kf = StratifiedKFold(n_splits=META_FOLDS, shuffle=True, random_state=seed)
-    for train_index, valid_index in kf.split(X_train_all, pd.qcut(y_train_all, SK_NUM, labels=[i for i in range(SK_NUM)])):
+    for train_index, valid_index in kf.split(X_train_all, qcut_target):
         X_train, X_valid = (oof_df.iloc[train_index, :], oof_df.iloc[valid_index, :])
         y_train, y_valid = (y_train_all.iloc[train_index], y_train_all.iloc[valid_index])
         name = config['meta_model']
@@ -135,7 +137,7 @@ def stacking(X_train_all, y_train_all, X_test):
             model = LassoWrapper()
         elif name == "Ridge":
             model = RidgeWrapper()
-        elif name == "ELasticNet":
+        elif name == "ElasticNet":
             model = ElasticNetWrapper()
         elif name == "KernelRidge":
             model = KernelRidgeWrapper()

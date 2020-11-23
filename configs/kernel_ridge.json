@@ -1,8 +1,9 @@
 {
     "model": "KernelRidge",
     "features": [
-        "numerical_features",
-        "object_features"
+        "temporal",
+        "numerical",
+        "objects"
         ],
     "params": {
         "alpha" : 9.2304694336833,

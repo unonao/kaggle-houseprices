@@ -9,11 +9,16 @@
         "XGBoost":"xgboost.json",
         "CatBoost":"catboost.json",
         "GradientBoosting":"gradient_boosting.json",
-        "ELasticNet":"elastic_net.json",
-        "Lasso":"lasso.json"
+        "RandomForest":"random_forest.json",
+        "ElasticNet":"elastic_net.json",
+        "KernelRidge":"kernel_ridge.json",
+        "Lasso":"lasso.json",
+        "Ridge":"ridge.json",
+        "SVR":"svr.json"
     },
-    "meta_model": "LinearRegression",
+    "meta_model": "Lasso",
     "params":{
+        "alpha" : 0.0005
     },
     "loss": "rmse",
     "target_name": "SalePrice",
