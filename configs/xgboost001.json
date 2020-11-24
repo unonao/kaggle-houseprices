@@ -1,0 +1,23 @@
+{
+    "model": "XGBoost",
+    "features": [
+        "temporal",
+        "numerical",
+        "objects"
+        ],
+    "params": {
+        "colsample_bytree":0.6959168479765205,
+        "gamma":0.00679351239097101,
+        "learning_rate":0.01,
+        "max_depth":3,
+        "min_child_weight":1.204206891928091,
+        "n_estimators":6000,
+        "reg_lambda":0.4013441917300995,
+        "subsample":0.9834112317433976,
+        "random_state" :7,
+        "nthread" : -1
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}

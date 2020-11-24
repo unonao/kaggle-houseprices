@@ -20,12 +20,11 @@ def fixing_skewness(df):
 
     # Check the skew of all numerical features
     skewed_feats = df[numeric_feats].apply(lambda x: skew(x)).sort_values(ascending=False)
+
     high_skew = skewed_feats[abs(skewed_feats) > 0.5]
     skewed_features = high_skew.index
-
     for feat in skewed_features:
         df[feat] = boxcox1p(df[feat], boxcox_normmax(df[feat] + 1))
-
     return df
 
 
@@ -102,12 +101,48 @@ class Objects(Feature):
         for feature in categorical_features:
             df[feature] = df[feature].fillna("Missing")
 
+        df = pd.get_dummies(df)
+        df = df.drop(overfit_reducer(df), axis=1)
+        self.train = df[:train.shape[0]]
+        self.test = df[train.shape[0]:]
+
+
+class ObjectsLabel(Feature):
+    def create_features(self):
+        df = features[categorical_features].copy()
+
+        # Filling these columns With most suitable value for these columns
+        df['Functional'] = df['Functional'].fillna('Typ')
+
+        df['Utilities'] = df['Utilities'].fillna('AllPub')
+        df['Electrical'] = df['Electrical'].fillna("SBrkr")
+        df['KitchenQual'] = df['KitchenQual'].fillna("TA")
+
+        # Filling these with MODE , i.e. , the most frequent value in these columns .
+        df['Exterior1st'] = df['Exterior1st'].fillna(df['Exterior1st'].mode()[0])
+        df['Exterior2nd'] = df['Exterior2nd'].fillna(df['Exterior2nd'].mode()[0])
+        df['SaleType'] = df['SaleType'].fillna(df['SaleType'].mode()[0])
+
+        for col in ['GarageType', 'GarageFinish', 'GarageQual', 'GarageCond']:
+            df[col] = df[col].fillna('None')
+
+        # Same with basement. Missing data in Bsmt most probably means missing basement , so replace NaN with zero .
+        for col in ('BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2'):
+            features[col] = features[col].fillna('None')
+
+        #  Idea is that similar MSSubClasses will have similar MSZoning
+        features['MSZoning'] = features.groupby('MSSubClass')['MSZoning'].transform(lambda x: x.fillna(x.mode()[0]))
+
+        for feature in categorical_features:
+            df[feature] = df[feature].fillna("Missing")
+
+        '''
         '''
         # label encode
         cols = ('FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond',
                 'ExterQual', 'ExterCond', 'HeatingQC', 'PoolQC', 'KitchenQual', 'BsmtFinType1',
                 'BsmtFinType2', 'Functional', 'Fence', 'BsmtExposure', 'GarageFinish', 'LandSlope',
-                'LotShape', 'PavedDrive', 'Street', 'Alley', 'CentralAir')
+                'LotShape', 'PavedDrive', 'Street', 'Alley', 'CentralAir', 'MSSubClass')
         for c in cols:
             lbl = LabelEncoder()
             lbl.fit(list(df[c].values))
@@ -116,7 +151,6 @@ class Objects(Feature):
         # some more-feature engineering:
         df["TotalGarageQual"] = df["GarageQual"] * df["GarageCond"]
         df["TotalExteriorQual"] = df["ExterQual"] * df["ExterCond"]
-        '''
 
         df = pd.get_dummies(df)
         df = df.drop(overfit_reducer(df), axis=1)

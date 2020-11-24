@@ -32,7 +32,8 @@ BASE_FOLDS = 3
 META_FOLDS = 3
 SK_NUM = 50
 
-SEED = [0, 1, 2, 3, 4]
+#SEED = [0, 1, 2, 3, 4]
+SEED = [0, 1]
 
 
 def stacking(X_train_all, y_train_all, X_test):

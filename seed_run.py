@@ -28,7 +28,8 @@ logging.basicConfig(
     filename='./logs/log_{0}_{1:%Y%m%d%H%M%S}.log'.format(config['model'], now), level=logging.DEBUG
 )
 
-SEED = [0, 1, 2, 3, 4, 5]
+#SEED = [0, 1, 2, 3, 4, 5]
+SEED = [0, 1]
 
 FOLDS = 3
 SK_NUM = 50
