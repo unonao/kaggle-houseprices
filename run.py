@@ -30,6 +30,7 @@ logging.basicConfig(
 
 FOLDS = 3
 SK_NUM = 50
+seed = 0
 
 
 def train_and_predict_lightgbm(X_train_all, y_train_all, X_test):

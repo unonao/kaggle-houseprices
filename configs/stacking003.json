@@ -3,7 +3,7 @@
     "features": [
         "temporal",
         "numerical_engineering",
-        "objects"
+        "objects_drop"
         ],
     "base_models":{
         "LightGBM":"default.json",

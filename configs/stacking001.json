@@ -2,8 +2,8 @@
     "model": "stacking",
     "features": [
         "temporal",
-        "numerical_engineering",
-        "objects"
+        "numerical",
+        "objects_drop"
         ],
     "base_models":{
         "LightGBM":"default.json",
