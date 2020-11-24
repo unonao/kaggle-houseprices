@@ -6,7 +6,7 @@
         "objects"
         ],
     "params": {
-        "learning_rate": 0.05,
+        "learning_rate": 0.01,
         "num_leaves": 9,
         "boosting_type": "gbdt",
         "colsample_bytree": 0.7270015196871651,

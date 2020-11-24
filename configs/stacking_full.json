@@ -1,0 +1,27 @@
+{
+    "model": "stacking",
+    "features": [
+        "temporal",
+        "numerical_engineering",
+        "objects"
+        ],
+    "base_models":{
+        "LightGBM":"lgbm.json",
+        "XGBoost":"xgboost001.json",
+        "CatBoost":"catboost001.json",
+        "GradientBoosting":"gradient_boosting001.json",
+        "RandomForest":"random_forest.json",
+        "ElasticNet":"elastic_net.json",
+        "KernelRidge":"kernel_ridge.json",
+        "Lasso":"lasso.json",
+        "Ridge":"ridge.json",
+        "SVR":"svr.json"
+    },
+    "meta_model": "Lasso",
+    "params":{
+        "alpha" : 0.0005
+    },
+    "loss": "rmse",
+    "target_name": "SalePrice",
+    "ID_name": "Id"
+}

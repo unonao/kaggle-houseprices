@@ -2,7 +2,7 @@
     "model": "LinearRegression",
     "features": [
         "temporal",
-        "numerical",
+        "numerical_engineering",
         "objects"
         ],
     "params": {

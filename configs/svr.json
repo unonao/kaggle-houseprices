@@ -2,7 +2,7 @@
     "model": "SVR",
     "features": [
         "temporal",
-        "numerical",
+        "numerical_engineering",
         "objects"
         ],
     "params": {

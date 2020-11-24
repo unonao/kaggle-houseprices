@@ -65,8 +65,8 @@ class LightGBM(Model):
             valid_sets=lgb_eval,
             # 最大で 5000 ラウンドまで学習する
             num_boost_round=5000,
-            # 10 ラウンド経過しても性能が向上しないときは学習を打ち切る
-            early_stopping_rounds=10,
+            # 50 ラウンド経過しても性能が向上しないときは学習を打ち切る
+            early_stopping_rounds=100,
             # ログ
             callbacks=callbacks
         )
