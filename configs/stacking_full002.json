@@ -17,9 +17,22 @@
         "Ridge":"ridge.json",
         "SVR":"svr.json"
     },
-    "meta_model": "Lasso",
+    "meta_model": "CatBoost",
     "params":{
-        "alpha" : 0.0005
+       "learning_rate": 0.01,
+        "iterations": 6000,
+        "eval_metric": "RMSE",
+        "random_seed": 42,
+        "logging_level": "Silent",
+        "loss_function": "RMSE",
+        "od_type": "Iter",
+        "od_wait": 100,
+        "one_hot_max_size": 20,
+        "l2_leaf_reg": 1.4264966279202298,
+        "depth": 5,
+        "rsm": 0.6253447219486281,
+        "random_strength": 0.009926214908500652,
+        "bagging_temperature": 23
     },
     "loss": "rmse",
     "target_name": "SalePrice",

@@ -32,8 +32,8 @@ BASE_FOLDS = 3
 META_FOLDS = 3
 SK_NUM = 50
 
-#SEED = [0, 1, 2, 3, 4]
 SEED = [0, 1, 2, 3, 4]
+#SEED = [0]
 
 
 def stacking(X_train_all, y_train_all, X_test):
@@ -123,6 +123,10 @@ def stacking(X_train_all, y_train_all, X_test):
     )
 
     # meta model の学習
+    # use_features_in_secondary = True
+    oof_df = pd.concat([X_train_all, oof_df], axis=1)
+    y_preds_df = pd.concat([X_test, y_preds_df], axis=1)
+
     y_preds = []
     scores = []
     for seed in SEED:

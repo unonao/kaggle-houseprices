@@ -29,7 +29,7 @@ logging.basicConfig(
 )
 
 #SEED = [0, 1, 2, 3, 4, 5]
-SEED = [0, 1]
+SEED = [0, 1, 2]
 
 FOLDS = 3
 SK_NUM = 50
