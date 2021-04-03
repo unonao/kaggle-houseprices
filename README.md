@@ -1,6 +1,7 @@
 # kaggle-houseprices
 
-# やること
+https://www.kaggle.com/c/house-prices-advanced-regression-techniques
+
 
 # 効いたこと
 
